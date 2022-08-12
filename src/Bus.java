@@ -1,11 +1,9 @@
 abstract class Transport {
-    int now_passenger=0;
     static int trans_num=0;
     //메모리 공유 call by reference
+    int now_passenger=0;
+    int max_passenger;
     int oil=100;
-    int now_speed=0;
-    int add_speed;
-    int max_passenger=30;
     int status=0; //상태 0:운행 1:차고지행
     int cost=2000;
     Transport(){
@@ -18,16 +16,11 @@ abstract class Transport {
        checkStatus(status);
 
     }
-    void changeSpeed(){
-
-    }
-
-    abstract void checkStatus(int status);
 
 
-
-    abstract void addOil(int add_oil);
     abstract void addPassenger(int n);
+    abstract void checkStatus(int status);
+    abstract void addOil(int add_oil);
 }
 
 
@@ -35,9 +28,7 @@ class Bus extends Transport{
     int max_passenger=30;
     int status=0; //상태 0:운행 1:차고지행
     int cost=1000;
-    void driveBus(){
 
-    }
     void changeStatus(String status){
         if(status.equals("운행중")){
             this.status=0;
@@ -45,14 +36,6 @@ class Bus extends Transport{
             this.status=1;
         }
         checkStatus(this.status);
-    }
-    @Override
-    void checkStatus(int status){
-        String status_word="운행 중";
-        if(status==1){
-            status_word="차고지행";
-        }
-        System.out.println("상태: "+status_word+" (변경됨)");
     }
     @Override
     void addPassenger(int n){
@@ -63,10 +46,18 @@ class Bus extends Transport{
         else {
             now_passenger += n;
             System.out.println("탑승 승객 수=" + n);
-            System.out.println("잔여 승객 수=" + (30 - n));
-            System.out.println("요금 확인=" + n*1000+"원");
+            System.out.println("잔여 승객 수=" + (max_passenger - n));
+            System.out.println("요금 확인=" + n*cost+"원");
         }
 
+    }
+    @Override
+    void checkStatus(int status){
+        String status_word="운행 중";
+        if(status==1){
+            status_word="차고지행";
+        }
+        System.out.println("상태: "+status_word+" (변경됨)");
     }
     @Override
     void addOil(int add_oil){
@@ -88,7 +79,6 @@ class Taxi extends Transport{
     int max_passenger=4;
     int status=0; //상태 0:운행 1:차고지행
     int cost=3000;
-    int oil=100;
     String destination="";
     int destination_distance=0;
     int default_distance=1;
@@ -141,6 +131,16 @@ class Taxi extends Transport{
 
     }
     @Override
+    void checkStatus(int status){
+        String status_word="";
+        if(status==1){
+            status_word="운행 불가";
+            System.out.println("상태: "+status_word+" (변경됨)");
+        }
+        else{System.out.println("상태=운행중");}
+
+    }
+    @Override
     void addOil(int add_oil){
         oil+=add_oil;
         System.out.println("주유량: "+oil);
@@ -153,16 +153,6 @@ class Taxi extends Transport{
         }
         else{status=0;}
         checkStatus(this.status);
-    }
-    @Override
-    void checkStatus(int status){
-        String status_word="";
-        if(status==1){
-            status_word="운행 불가";
-            System.out.println("상태: "+status_word+" (변경됨)");
-        }
-        else{System.out.println("상태=운행중");}
-
     }
 
     void payCost(){
