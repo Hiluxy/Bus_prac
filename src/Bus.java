@@ -18,9 +18,9 @@ abstract class Transport {
     }
 
 
-    abstract void addPassenger(int n);
-    abstract void checkStatus(int status);
-    abstract void addOil(int add_oil);
+    abstract void addPassenger(int n); //승객을 추가한다
+    abstract void checkStatus(int status); //상태를 확인한다
+    abstract void addOil(int add_oil); //오일을 추가한다
 }
 
 
